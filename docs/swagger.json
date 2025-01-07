@@ -20,7 +20,7 @@
     "host": "${HOST}",
     "basePath": "/",
     "paths": {
-        "/book/create": {
+        "/book": {
             "post": {
                 "description": "Endpoint para cadastrar um novo livro no sistema, incluindo título, categoria, autor e sinopse.",
                 "consumes": [
@@ -59,6 +59,35 @@
                     },
                     "500": {
                         "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/desafio_taghos_internal_adapter_handler_http_responses.InternalServerErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/indexing/book": {
+            "get": {
+                "description": "Endpoint para criar índices nos campos \"author\", \"category\", \"synopsis\" e \"title\" da coleção de livros no MongoDB.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Indexing"
+                ],
+                "summary": "Criar índices para a coleção de livros",
+                "responses": {
+                    "200": {
+                        "description": "Índices criados com sucesso",
+                        "schema": {
+                            "$ref": "#/definitions/desafio_taghos_internal_adapter_handler_http_responses.SuccessResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Erro interno no servidor",
                         "schema": {
                             "$ref": "#/definitions/desafio_taghos_internal_adapter_handler_http_responses.InternalServerErrorResponse"
                         }
@@ -118,6 +147,21 @@
                     "description": "Indica se a criação foi bem-sucedida",
                     "type": "boolean",
                     "example": false
+                }
+            }
+        },
+        "desafio_taghos_internal_adapter_handler_http_responses.SuccessResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "description": "Mensagem de sucesso",
+                    "type": "string",
+                    "example": "Operation successful"
+                },
+                "success": {
+                    "description": "Indica se a operação foi bem-sucedida",
+                    "type": "boolean",
+                    "example": true
                 }
             }
         },

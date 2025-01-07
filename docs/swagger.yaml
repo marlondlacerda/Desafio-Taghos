@@ -37,6 +37,17 @@ definitions:
         example: false
         type: boolean
     type: object
+  desafio_taghos_internal_adapter_handler_http_responses.SuccessResponse:
+    properties:
+      message:
+        description: Mensagem de sucesso
+        example: Operation successful
+        type: string
+      success:
+        description: Indica se a operação foi bem-sucedida
+        example: true
+        type: boolean
+    type: object
   desafio_taghos_internal_core_domain.Book:
     description: Informações completas do livro, incluindo ID, título, categoria,
       autor, sinopse, e timestamps de criação e atualização.
@@ -92,7 +103,7 @@ info:
   title: Desafio Taghos
   version: "1.0"
 paths:
-  /book/create:
+  /book:
     post:
       consumes:
       - application/json
@@ -123,6 +134,26 @@ paths:
       summary: Criar um novo livro
       tags:
       - Book
+  /indexing/book:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint para criar índices nos campos "author", "category", "synopsis"
+        e "title" da coleção de livros no MongoDB.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Índices criados com sucesso
+          schema:
+            $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.SuccessResponse'
+        "500":
+          description: Erro interno no servidor
+          schema:
+            $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.InternalServerErrorResponse'
+      summary: Criar índices para a coleção de livros
+      tags:
+      - Indexing
 schemes:
 - http
 - https

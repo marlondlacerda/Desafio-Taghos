@@ -20,6 +20,10 @@ func NewBookMongoRepository(db *mongo.Database) port.BookRepository {
 	}
 }
 
+func (r *BookMongoRepository) GetCollection() *mongo.Collection {
+	return r.collection
+}
+
 func (r *BookMongoRepository) Create(book *domain.Book) (*domain.Book, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -45,4 +49,5 @@ func (r *BookMongoRepository) GetAll() ([]*domain.Book, error) {
 }
 
 func (r *BookMongoRepository) Delete(id string) error {
+	return nil
 }

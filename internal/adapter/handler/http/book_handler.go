@@ -27,7 +27,7 @@ func NewBookHandler(service *service.BookService) *BookHandler {
 // @Success 201 {object} responses.CreatedResponse
 // @Failure 400 {object} responses.BadRequestResponse
 // @Failure 500 {object} responses.InternalServerErrorResponse
-// @Router /book/create [post]
+// @Router /book [post]
 func (h *BookHandler) CreateBook(ctx *fiber.Ctx) error {
 	book := domain.Book{}
 

@@ -50,6 +50,7 @@ func Setup() *fiber.App {
 	middleware.Swagger(app)
 
 	routes.BookRouter(app)
+	routes.IndexingRouter(app)
 
 	return app
 }

@@ -17,3 +17,16 @@ type CreatedResponse struct {
 	Message string       `json:"message" example:"Book created successfully"` // Mensagem de sucesso
 	Data    *domain.Book `json:"data"`                                        // Dados do livro criado
 }
+
+// SuccessBookResponse representa uma resposta de sucesso, com ou sem dados
+type SuccessBookResponse struct {
+	Success bool         `json:"success" example:"true"`                 // Indica se a operação foi bem-sucedida
+	Message string       `json:"message" example:"Operation successful"` // Mensagem de sucesso
+	Data    *domain.Book `json:"data,omitempty"`                         // Dados do livro
+}
+
+// SuccessResponse representa uma resposta genérica de sucesso
+type SuccessResponse struct {
+	Success bool   `json:"success" example:"true"`                 // Indica se a operação foi bem-sucedida
+	Message string `json:"message" example:"Operation successful"` // Mensagem de sucesso
+}
