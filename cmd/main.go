@@ -1,26 +1,36 @@
 package main
 
 import (
-	"fmt"
-	"net/http"
+	"log"
 
+	"github.com/gofiber/fiber/v2"
+
+	"desafio_taghos/infra/config"
+	"desafio_taghos/infra/database"
+	"desafio_taghos/internal/adapter/handler/http/middleware"
 	"desafio_taghos/internal/framework/logs"
 )
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	logs.Logger.Info().Msg("Recebida uma requisição HTTP")
-
-	fmt.Fprintf(w, "Hello, World!")
+func main() {
+	app := Setup()
+	log.Fatal(app.Listen(":" + config.Env("PORT")))
 }
 
-func main() {
+func Setup() *fiber.App {
 	logs.InitializeLogger()
-
 	logs.Logger.Info().Msg("Servidor rodando na porta 3000...")
 
-	http.HandleFunc("/", handler)
+	app := fiber.New(fiber.Config{
+		Prefork:       true,
+		CaseSensitive: true,
+		ServerHeader:  config.ServerName,
+	})
 
-	if err := http.ListenAndServe(":3000", nil); err != nil {
-		logs.Logger.Fatal().Err(err).Msg("Erro ao iniciar o servidor")
+	if mongoErr := database.NewMongoDBDatabaseConnection(false); mongoErr != nil {
+		log.Fatal(mongoErr)
 	}
+
+	middleware.Common(app)
+
+	return app
 }
