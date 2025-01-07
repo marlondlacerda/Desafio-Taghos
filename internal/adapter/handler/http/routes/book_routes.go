@@ -22,4 +22,5 @@ func BookRouter(app fiber.Router) {
 	bookHandler := handler.NewBookHandler(bookService)
 
 	app.Post("/book", bookHandler.CreateBook)
+	app.Post("/book/:id", bookHandler.UpdateBook)
 }

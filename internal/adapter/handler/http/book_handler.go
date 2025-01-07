@@ -52,3 +52,57 @@ func (h *BookHandler) CreateBook(ctx *fiber.Ctx) error {
 		Data:    createdBook,
 	})
 }
+
+// @Summary Atualizar um livro
+// @Description Endpoint para atualizar os dados de um livro existente no sistema.
+// @Tags Book
+// @Accept json
+// @Produce json
+// @Param id path string true "ID do livro"
+// @Param request body domain.Book true "Dados atualizados do livro"
+// @Success 200 {object} responses.SuccessBookResponse
+// @Failure 400 {object} responses.BadRequestResponse
+// @Failure 404 {object} responses.NotFoundResponse
+// @Failure 500 {object} responses.InternalServerErrorResponse
+// @Router /book/{id} [post]
+func (h *BookHandler) UpdateBook(ctx *fiber.Ctx) error {
+	// Obtendo o ID do livro da URL
+	id := ctx.Params("id")
+	if id == "" {
+		return ctx.Status(fiber.StatusBadRequest).JSON(responses.BadRequestResponse{
+			Success: false,
+			Message: "ID do livro não fornecido.",
+		})
+	}
+
+	// Parsing dos dados do corpo da requisição
+	book := domain.Book{}
+	if err := ctx.BodyParser(&book); err != nil {
+		return ctx.Status(fiber.StatusBadRequest).JSON(responses.BadRequestResponse{
+			Success: false,
+			Message: "Falha ao processar os dados fornecidos. Verifique o formato da requisição e tente novamente.",
+		})
+	}
+
+	// Atualizando o livro
+	updatedBook, err := h.service.UpdateBook(id, &book)
+	if err != nil {
+		if err.Error() == "document not found" {
+			return ctx.Status(fiber.StatusNotFound).JSON(responses.NotFoundResponse{
+				Success: false,
+				Message: "Livro não encontrado.",
+			})
+		}
+		return ctx.Status(fiber.StatusInternalServerError).JSON(responses.InternalServerErrorResponse{
+			Success: false,
+			Message: err.Error(),
+		})
+	}
+
+	// Retornando sucesso com os dados atualizados
+	return ctx.Status(fiber.StatusOK).JSON(responses.SuccessBookResponse{
+		Success: true,
+		Message: "Livro atualizado com sucesso.",
+		Data:    updatedBook,
+	})
+}

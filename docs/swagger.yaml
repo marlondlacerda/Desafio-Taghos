@@ -4,7 +4,7 @@ definitions:
     properties:
       message:
         description: Mensagem de erro
-        example: bad request when try to create book
+        example: Bad Request when try to create book
         type: string
       success:
         description: Indica se a criação foi bem-sucedida
@@ -35,6 +35,32 @@ definitions:
       success:
         description: Indica se a criação foi bem-sucedida
         example: false
+        type: boolean
+    type: object
+  desafio_taghos_internal_adapter_handler_http_responses.NotFoundResponse:
+    properties:
+      message:
+        description: Mensagem de erro
+        example: Book not found
+        type: string
+      success:
+        description: Indica se a criação foi bem-sucedida
+        example: false
+        type: boolean
+    type: object
+  desafio_taghos_internal_adapter_handler_http_responses.SuccessBookResponse:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/desafio_taghos_internal_core_domain.Book'
+        description: Dados do livro
+      message:
+        description: Mensagem de sucesso
+        example: Operation successful
+        type: string
+      success:
+        description: Indica se a operação foi bem-sucedida
+        example: true
         type: boolean
     type: object
   desafio_taghos_internal_adapter_handler_http_responses.SuccessResponse:
@@ -132,6 +158,45 @@ paths:
           schema:
             $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.InternalServerErrorResponse'
       summary: Criar um novo livro
+      tags:
+      - Book
+  /book/{id}:
+    post:
+      consumes:
+      - application/json
+      description: Endpoint para atualizar os dados de um livro existente no sistema.
+      parameters:
+      - description: ID do livro
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Dados atualizados do livro
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/desafio_taghos_internal_core_domain.Book'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.SuccessBookResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.BadRequestResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.NotFoundResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.InternalServerErrorResponse'
+      summary: Atualizar um livro
       tags:
       - Book
   /indexing/book:

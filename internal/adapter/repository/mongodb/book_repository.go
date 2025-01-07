@@ -2,9 +2,12 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"desafio_taghos/internal/core/domain"
 	"desafio_taghos/internal/core/port"
@@ -37,7 +40,24 @@ func (r *BookMongoRepository) Create(book *domain.Book) (*domain.Book, error) {
 }
 
 func (r *BookMongoRepository) Update(book *domain.Book) (*domain.Book, error) {
-	return nil, nil
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	filter := bson.M{"_id": book.ID}
+	update := bson.M{"$set": book}
+
+	opts := options.FindOneAndUpdate().SetReturnDocument(options.After) // Retorna o documento após a atualização
+
+	var updatedBook domain.Book
+	err := r.collection.FindOneAndUpdate(ctx, filter, update, opts).Decode(&updatedBook)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, errors.New("document not found")
+		}
+		return nil, err
+	}
+
+	return &updatedBook, nil
 }
 
 func (r *BookMongoRepository) GetByID(id string) (*domain.Book, error) {

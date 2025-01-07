@@ -66,6 +66,65 @@
                 }
             }
         },
+        "/book/{id}": {
+            "post": {
+                "description": "Endpoint para atualizar os dados de um livro existente no sistema.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Atualizar um livro",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do livro",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "Dados atualizados do livro",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/desafio_taghos_internal_core_domain.Book"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/desafio_taghos_internal_adapter_handler_http_responses.SuccessBookResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/desafio_taghos_internal_adapter_handler_http_responses.BadRequestResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/desafio_taghos_internal_adapter_handler_http_responses.NotFoundResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/desafio_taghos_internal_adapter_handler_http_responses.InternalServerErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/indexing/book": {
             "get": {
                 "description": "Endpoint para criar índices nos campos \"author\", \"category\", \"synopsis\" e \"title\" da coleção de livros no MongoDB.",
@@ -103,7 +162,7 @@
                 "message": {
                     "description": "Mensagem de erro",
                     "type": "string",
-                    "example": "bad request when try to create book"
+                    "example": "Bad Request when try to create book"
                 },
                 "success": {
                     "description": "Indica se a criação foi bem-sucedida",
@@ -147,6 +206,44 @@
                     "description": "Indica se a criação foi bem-sucedida",
                     "type": "boolean",
                     "example": false
+                }
+            }
+        },
+        "desafio_taghos_internal_adapter_handler_http_responses.NotFoundResponse": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "description": "Mensagem de erro",
+                    "type": "string",
+                    "example": "Book not found"
+                },
+                "success": {
+                    "description": "Indica se a criação foi bem-sucedida",
+                    "type": "boolean",
+                    "example": false
+                }
+            }
+        },
+        "desafio_taghos_internal_adapter_handler_http_responses.SuccessBookResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Dados do livro",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/desafio_taghos_internal_core_domain.Book"
+                        }
+                    ]
+                },
+                "message": {
+                    "description": "Mensagem de sucesso",
+                    "type": "string",
+                    "example": "Operation successful"
+                },
+                "success": {
+                    "description": "Indica se a operação foi bem-sucedida",
+                    "type": "boolean",
+                    "example": true
                 }
             }
         },

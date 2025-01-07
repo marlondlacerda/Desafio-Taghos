@@ -30,3 +30,12 @@ func (s *BookService) CreateBook(book *domain.Book) (*domain.Book, error) {
 
 	return s.repository.Create(book)
 }
+
+func (s *BookService) UpdateBook(id string, book *domain.Book) (*domain.Book, error) {
+	updatedBook, err := s.repository.Update(book)
+	if err != nil {
+		return nil, err
+	}
+
+	return updatedBook, nil
+}

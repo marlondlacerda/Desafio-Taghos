@@ -4,7 +4,12 @@ import "desafio_taghos/internal/core/domain"
 
 type BadRequestResponse struct {
 	Success bool   `json:"success" example:"false"`                               // Indica se a criação foi bem-sucedida
-	Message string `json:"message" example:"bad request when try to create book"` // Mensagem de erro
+	Message string `json:"message" example:"Bad Request when try to create book"` // Mensagem de erro
+}
+
+type NotFoundResponse struct {
+	Success bool   `json:"success" example:"false"`          // Indica se a criação foi bem-sucedida
+	Message string `json:"message" example:"Book not found"` // Mensagem de erro
 }
 
 type InternalServerErrorResponse struct {
