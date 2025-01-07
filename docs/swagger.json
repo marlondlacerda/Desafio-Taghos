@@ -21,6 +21,33 @@
     "basePath": "/",
     "paths": {
         "/book": {
+            "get": {
+                "description": "Endpoint para buscar todos os livros existentes no sistema.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Buscar todos os livros",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/desafio_taghos_internal_adapter_handler_http_responses.SuccessBooksResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/desafio_taghos_internal_adapter_handler_http_responses.InternalServerErrorResponse"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Endpoint para cadastrar um novo livro no sistema, incluindo título, categoria, autor e sinopse.",
                 "consumes": [
@@ -287,6 +314,28 @@
                     "description": "Mensagem de sucesso",
                     "type": "string",
                     "example": "Operation successful"
+                },
+                "success": {
+                    "description": "Indica se a operação foi bem-sucedida",
+                    "type": "boolean",
+                    "example": true
+                }
+            }
+        },
+        "desafio_taghos_internal_adapter_handler_http_responses.SuccessBooksResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "description": "Lista de livros",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/desafio_taghos_internal_core_domain.Book"
+                    }
+                },
+                "message": {
+                    "description": "Mensagem de sucesso",
+                    "type": "string",
+                    "example": "Livros encontrados com sucesso."
                 },
                 "success": {
                     "description": "Indica se a operação foi bem-sucedida",

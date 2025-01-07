@@ -77,7 +77,25 @@ func (r *BookMongoRepository) GetByID(id string) (*domain.Book, error) {
 }
 
 func (r *BookMongoRepository) GetAll() ([]*domain.Book, error) {
-	return nil, nil
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	cursor, err := r.collection.Find(ctx, bson.M{})
+	if err != nil {
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var books []*domain.Book
+	for cursor.Next(ctx) {
+		var book domain.Book
+		if err := cursor.Decode(&book); err != nil {
+			return nil, err
+		}
+		books = append(books, &book)
+	}
+
+	return books, nil
 }
 
 func (r *BookMongoRepository) Delete(id string) error {

@@ -23,6 +23,12 @@ type CreatedResponse struct {
 	Data    *domain.Book `json:"data"`                                        // Dados do livro criado
 }
 
+// SuccessResponse representa uma resposta genérica de sucesso
+type SuccessResponse struct {
+	Success bool   `json:"success" example:"true"`                 // Indica se a operação foi bem-sucedida
+	Message string `json:"message" example:"Operation successful"` // Mensagem de sucesso
+}
+
 // SuccessBookResponse representa uma resposta de sucesso, com ou sem dados
 type SuccessBookResponse struct {
 	Success bool         `json:"success" example:"true"`                 // Indica se a operação foi bem-sucedida
@@ -30,8 +36,9 @@ type SuccessBookResponse struct {
 	Data    *domain.Book `json:"data,omitempty"`                         // Dados do livro
 }
 
-// SuccessResponse representa uma resposta genérica de sucesso
-type SuccessResponse struct {
-	Success bool   `json:"success" example:"true"`                 // Indica se a operação foi bem-sucedida
-	Message string `json:"message" example:"Operation successful"` // Mensagem de sucesso
+// SuccessBooksResponse representa uma resposta de sucesso com todos os livros
+type SuccessBooksResponse struct {
+	Success bool           `json:"success" example:"true"`                            // Indica se a operação foi bem-sucedida
+	Message string         `json:"message" example:"Livros encontrados com sucesso."` // Mensagem de sucesso
+	Data    []*domain.Book `json:"data"`                                              // Lista de livros
 }

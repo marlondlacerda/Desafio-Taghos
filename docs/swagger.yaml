@@ -63,6 +63,22 @@ definitions:
         example: true
         type: boolean
     type: object
+  desafio_taghos_internal_adapter_handler_http_responses.SuccessBooksResponse:
+    properties:
+      data:
+        description: Lista de livros
+        items:
+          $ref: '#/definitions/desafio_taghos_internal_core_domain.Book'
+        type: array
+      message:
+        description: Mensagem de sucesso
+        example: Livros encontrados com sucesso.
+        type: string
+      success:
+        description: Indica se a operação foi bem-sucedida
+        example: true
+        type: boolean
+    type: object
   desafio_taghos_internal_adapter_handler_http_responses.SuccessResponse:
     properties:
       message:
@@ -130,6 +146,24 @@ info:
   version: "1.0"
 paths:
   /book:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint para buscar todos os livros existentes no sistema.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.SuccessBooksResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.InternalServerErrorResponse'
+      summary: Buscar todos os livros
+      tags:
+      - Book
     post:
       consumes:
       - application/json

@@ -6,6 +6,7 @@ import (
 	"desafio_taghos/internal/adapter/handler/http/responses"
 	"desafio_taghos/internal/core/domain"
 	"desafio_taghos/internal/core/service"
+	"desafio_taghos/internal/framework/util"
 
 	_ "desafio_taghos/docs"
 )
@@ -75,6 +76,14 @@ func (h *BookHandler) UpdateBook(ctx *fiber.Ctx) error {
 		})
 	}
 
+	// Validando se o ID é um UUID válido
+	if !util.IsValidUUID(id) {
+		return ctx.Status(fiber.StatusBadRequest).JSON(responses.BadRequestResponse{
+			Success: false,
+			Message: "ID do livro fornecido não é um UUID válido.",
+		})
+	}
+
 	// Parsing dos dados do corpo da requisição
 	book := domain.Book{}
 	if err := ctx.BodyParser(&book); err != nil {
@@ -128,6 +137,14 @@ func (h *BookHandler) GetBookByID(ctx *fiber.Ctx) error {
 		})
 	}
 
+	// Validando se o ID é um UUID válido
+	if !util.IsValidUUID(id) {
+		return ctx.Status(fiber.StatusBadRequest).JSON(responses.BadRequestResponse{
+			Success: false,
+			Message: "ID do livro fornecido não é um UUID válido.",
+		})
+	}
+
 	// Buscando o livro pelo ID
 	book, err := h.service.GetBookByID(id)
 	if err != nil {
@@ -148,5 +165,31 @@ func (h *BookHandler) GetBookByID(ctx *fiber.Ctx) error {
 		Success: true,
 		Message: "Livro encontrado com sucesso.",
 		Data:    book,
+	})
+}
+
+// @Summary Buscar todos os livros
+// @Description Endpoint para buscar todos os livros existentes no sistema.
+// @Tags Book
+// @Accept json
+// @Produce json
+// @Success 200 {object} responses.SuccessBooksResponse
+// @Failure 500 {object} responses.InternalServerErrorResponse
+// @Router /book [get]
+func (h *BookHandler) GetAllBooks(ctx *fiber.Ctx) error {
+	// Buscando todos os livros
+	books, err := h.service.GetAllBooks()
+	if err != nil {
+		return ctx.Status(fiber.StatusInternalServerError).JSON(responses.InternalServerErrorResponse{
+			Success: false,
+			Message: err.Error(),
+		})
+	}
+
+	// Retornando sucesso com os dados dos livros
+	return ctx.Status(fiber.StatusOK).JSON(responses.SuccessBooksResponse{
+		Success: true,
+		Message: "Livros encontrados com sucesso.",
+		Data:    books,
 	})
 }

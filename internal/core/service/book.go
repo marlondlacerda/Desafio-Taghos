@@ -32,6 +32,8 @@ func (s *BookService) CreateBook(book *domain.Book) (*domain.Book, error) {
 }
 
 func (s *BookService) UpdateBook(id string, book *domain.Book) (*domain.Book, error) {
+	book.UpdatedAt = time.Now()
+
 	updatedBook, err := s.repository.Update(book)
 	if err != nil {
 		return nil, err
@@ -47,4 +49,13 @@ func (s *BookService) GetBookByID(id string) (*domain.Book, error) {
 	}
 
 	return book, nil
+}
+
+func (s *BookService) GetAllBooks() ([]*domain.Book, error) {
+	books, err := s.repository.GetAll()
+	if err != nil {
+		return nil, err
+	}
+
+	return books, nil
 }
