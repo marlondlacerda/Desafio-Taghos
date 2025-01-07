@@ -198,6 +198,48 @@
                         }
                     }
                 }
+            },
+            "delete": {
+                "description": "Endpoint para deletar um livro existente no sistema pelo ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Deletar um livro",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do livro",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/desafio_taghos_internal_adapter_handler_http_responses.SuccessResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/desafio_taghos_internal_adapter_handler_http_responses.BadRequestResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/desafio_taghos_internal_adapter_handler_http_responses.InternalServerErrorResponse"
+                        }
+                    }
+                }
             }
         },
         "/indexing/book": {

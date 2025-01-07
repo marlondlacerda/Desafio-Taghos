@@ -1,11 +1,3 @@
-# variáveis
-# export MONGODB_URI=mongodb://localhost:27017
-# export MONGO_PARAM=retryWrites=true&w=1&readPreference=primaryPreferred
-
-export API_PORT=3000
-export STAGE=development
-export BATCH_SIZE=10
-
 # Tarefas
 all: build run
 
@@ -16,10 +8,13 @@ build:
 	go build -tags dev -o bin/desafiotaghos cmd/main.go
 
 run:
-	./bin/session
+	./bin/desafiotaghos
 
 dev:
 	air
+
+swagger:
+	swag init -g cmd/main.go --parseDependency --parseInternal
 
 lint:
 	golangci-lint run

@@ -193,3 +193,47 @@ func (h *BookHandler) GetAllBooks(ctx *fiber.Ctx) error {
 		Data:    books,
 	})
 }
+
+// @Summary Deletar um livro
+// @Description Endpoint para deletar um livro existente no sistema pelo ID.
+// @Tags Book
+// @Accept json
+// @Produce json
+// @Param id path string true "ID do livro"
+// @Success 200 {object} responses.SuccessResponse
+// @Failure 400 {object} responses.BadRequestResponse
+// @Failure 500 {object} responses.InternalServerErrorResponse
+// @Router /book/{id} [delete]
+func (h *BookHandler) DeleteBook(ctx *fiber.Ctx) error {
+	// Obtendo o ID do livro da URL
+	id := ctx.Params("id")
+	if id == "" {
+		return ctx.Status(fiber.StatusBadRequest).JSON(responses.BadRequestResponse{
+			Success: false,
+			Message: "ID do livro não fornecido.",
+		})
+	}
+
+	// Validando se o ID é um UUID válido
+	if !util.IsValidUUID(id) {
+		return ctx.Status(fiber.StatusBadRequest).JSON(responses.BadRequestResponse{
+			Success: false,
+			Message: "ID do livro fornecido não é um UUID válido.",
+		})
+	}
+
+	// Deletando o livro
+	err := h.service.DeleteBook(id)
+	if err != nil {
+		return ctx.Status(fiber.StatusInternalServerError).JSON(responses.InternalServerErrorResponse{
+			Success: false,
+			Message: err.Error(),
+		})
+	}
+
+	// Retornando sucesso
+	return ctx.Status(fiber.StatusOK).JSON(responses.SuccessResponse{
+		Success: true,
+		Message: "Livro deletado com sucesso.",
+	})
+}

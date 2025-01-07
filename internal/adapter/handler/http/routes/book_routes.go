@@ -25,4 +25,5 @@ func BookRouter(app fiber.Router) {
 	app.Post("/book/:id", bookHandler.UpdateBook)
 	app.Get("/book/:id", bookHandler.GetBookByID)
 	app.Get("/book", bookHandler.GetAllBooks)
+	app.Delete("/book/:id", bookHandler.DeleteBook)
 }

@@ -99,5 +99,9 @@ func (r *BookMongoRepository) GetAll() ([]*domain.Book, error) {
 }
 
 func (r *BookMongoRepository) Delete(id string) error {
-	return nil
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	_, err := r.collection.DeleteOne(ctx, bson.M{"_id": id})
+	return err
 }

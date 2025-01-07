@@ -195,6 +195,34 @@ paths:
       tags:
       - Book
   /book/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Endpoint para deletar um livro existente no sistema pelo ID.
+      parameters:
+      - description: ID do livro
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.BadRequestResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.InternalServerErrorResponse'
+      summary: Deletar um livro
+      tags:
+      - Book
     get:
       consumes:
       - application/json

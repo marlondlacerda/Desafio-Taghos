@@ -59,3 +59,7 @@ func (s *BookService) GetAllBooks() ([]*domain.Book, error) {
 
 	return books, nil
 }
+
+func (s *BookService) DeleteBook(id string) error {
+	return s.repository.Delete(id)
+}
