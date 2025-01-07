@@ -1,0 +1,129 @@
+basePath: /
+definitions:
+  desafio_taghos_internal_adapter_handler_http_responses.BadRequestResponse:
+    properties:
+      message:
+        description: Mensagem de erro
+        example: bad request when try to create book
+        type: string
+      success:
+        description: Indica se a criação foi bem-sucedida
+        example: false
+        type: boolean
+    type: object
+  desafio_taghos_internal_adapter_handler_http_responses.CreatedResponse:
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/desafio_taghos_internal_core_domain.Book'
+        description: Dados do livro criado
+      message:
+        description: Mensagem de sucesso
+        example: Book created successfully
+        type: string
+      success:
+        description: Indica se a criação foi bem-sucedida
+        example: true
+        type: boolean
+    type: object
+  desafio_taghos_internal_adapter_handler_http_responses.InternalServerErrorResponse:
+    properties:
+      message:
+        description: Mensagem de erro
+        example: Internal Server Error
+        type: string
+      success:
+        description: Indica se a criação foi bem-sucedida
+        example: false
+        type: boolean
+    type: object
+  desafio_taghos_internal_core_domain.Book:
+    description: Informações completas do livro, incluindo ID, título, categoria,
+      autor, sinopse, e timestamps de criação e atualização.
+    properties:
+      _id:
+        description: ID do livro (gerado automaticamente pelo banco de dados)
+        type: string
+      author:
+        description: Autor do livro
+        type: string
+      category:
+        description: Categoria do livro
+        type: string
+      created_at:
+        description: Data e hora de criação do livro (gerado automaticamente)
+        type: string
+      synopsis:
+        description: Sinopse do livro
+        type: string
+      title:
+        description: Título do livro
+        type: string
+      updated_at:
+        description: Data e hora da última atualização do livro
+        type: string
+    type: object
+  desafio_taghos_internal_core_domain.BookCreatedRequest:
+    description: Estrutura de dados usada para criar um novo livro, sem incluir campos
+      de controle como ID, CreatedAt e UpdatedAt.
+    properties:
+      author:
+        description: Autor do livro
+        type: string
+      category:
+        description: Categoria do livro
+        type: string
+      synopsis:
+        description: Sinopse do livro
+        type: string
+      title:
+        description: Título do livro
+        type: string
+    type: object
+host: ${HOST}
+info:
+  contact:
+    name: API Support
+  description: API de Book
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Desafio Taghos
+  version: "1.0"
+paths:
+  /book/create:
+    post:
+      consumes:
+      - application/json
+      description: Endpoint para cadastrar um novo livro no sistema, incluindo título,
+        categoria, autor e sinopse.
+      parameters:
+      - description: query params
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/desafio_taghos_internal_core_domain.BookCreatedRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.CreatedResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.BadRequestResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.InternalServerErrorResponse'
+      summary: Criar um novo livro
+      tags:
+      - Book
+schemes:
+- http
+- https
+swagger: "2.0"
