@@ -8,6 +8,7 @@ import (
 	"desafio_taghos/infra/config"
 	"desafio_taghos/infra/database"
 	"desafio_taghos/internal/adapter/handler/http/middleware"
+	"desafio_taghos/internal/adapter/handler/http/routes"
 	"desafio_taghos/internal/framework/logs"
 
 	_ "desafio_taghos/docs"
@@ -47,6 +48,8 @@ func Setup() *fiber.App {
 
 	middleware.Common(app)
 	middleware.Swagger(app)
+
+	routes.BookRouter(app)
 
 	return app
 }
