@@ -5,11 +5,13 @@ RUN apk add --no-cache ca-certificates \
 
 WORKDIR /app
 
-RUN go install github.com/air-verse/air@latest
-
 COPY . .
 
 RUN go mod tidy
+
+RUN go install github.com/air-verse/air@latest
+RUN go install github.com/swaggo/swag/cmd/swag@latest
+RUN swag init -g cmd/main.go --parseDependency --parseInternal
 
 WORKDIR /go/src
 

@@ -1,0 +1,5 @@
+# após setar as variáveis, duplique esse arquivo e renomeie para .env
+MONGOURI="mongodb://mongodb:27017"
+MONGOURI_DATABASE="bookstore"
+ENVIRONMENT="dev"
+PORT=3000

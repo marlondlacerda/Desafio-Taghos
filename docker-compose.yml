@@ -16,16 +16,9 @@ services:
     restart: always
     ports:
       - '27017:27017'
-    command: mongod --replSet rs0
     healthcheck:
-      test: |
-        mongosh --eval "try { rs.status().ok } catch (e) { rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'localhost:27017' }] }).ok }"
+      test: ["CMD", "mongosh", "--eval", "db.runCommand('ping')"]
       start_period: 0s
       interval: 500ms
       timeout: 5s
       retries: 5
-
-volumes:
-  mongodb1_data:
-  mongodb2_data:
-  mongodb3_data:
