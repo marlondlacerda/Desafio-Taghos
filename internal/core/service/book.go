@@ -39,3 +39,12 @@ func (s *BookService) UpdateBook(id string, book *domain.Book) (*domain.Book, er
 
 	return updatedBook, nil
 }
+
+func (s *BookService) GetBookByID(id string) (*domain.Book, error) {
+	book, err := s.repository.GetByID(id)
+	if err != nil {
+		return nil, err
+	}
+
+	return book, nil
+}

@@ -69,6 +69,54 @@ const docTemplate = `{
             }
         },
         "/book/{id}": {
+            "get": {
+                "description": "Endpoint para buscar um livro existente no sistema pelo ID.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Buscar um livro pelo ID",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID do livro",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/desafio_taghos_internal_adapter_handler_http_responses.SuccessBookResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/desafio_taghos_internal_adapter_handler_http_responses.BadRequestResponse"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/desafio_taghos_internal_adapter_handler_http_responses.NotFoundResponse"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/desafio_taghos_internal_adapter_handler_http_responses.InternalServerErrorResponse"
+                        }
+                    }
+                }
+            },
             "post": {
                 "description": "Endpoint para atualizar os dados de um livro existente no sistema.",
                 "consumes": [

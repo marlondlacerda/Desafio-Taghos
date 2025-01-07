@@ -161,6 +161,38 @@ paths:
       tags:
       - Book
   /book/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Endpoint para buscar um livro existente no sistema pelo ID.
+      parameters:
+      - description: ID do livro
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.SuccessBookResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.BadRequestResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.NotFoundResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/desafio_taghos_internal_adapter_handler_http_responses.InternalServerErrorResponse'
+      summary: Buscar um livro pelo ID
+      tags:
+      - Book
     post:
       consumes:
       - application/json

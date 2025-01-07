@@ -61,7 +61,19 @@ func (r *BookMongoRepository) Update(book *domain.Book) (*domain.Book, error) {
 }
 
 func (r *BookMongoRepository) GetByID(id string) (*domain.Book, error) {
-	return nil, nil
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	var book domain.Book
+	err := r.collection.FindOne(ctx, bson.M{"_id": id}).Decode(&book)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, errors.New("document not found")
+		}
+		return nil, err
+	}
+
+	return &book, nil
 }
 
 func (r *BookMongoRepository) GetAll() ([]*domain.Book, error) {
