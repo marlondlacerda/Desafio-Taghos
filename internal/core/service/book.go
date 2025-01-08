@@ -57,6 +57,10 @@ func (s *BookService) GetAllBooks() ([]*domain.Book, error) {
 		return nil, err
 	}
 
+	if len(books) == 0 {
+		return []*domain.Book{}, nil
+	}
+
 	return books, nil
 }
 
